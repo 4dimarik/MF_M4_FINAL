@@ -4,8 +4,6 @@ import { AppProvider } from './context/AppProvider/ui/AppProvider';
 import NoteStack from './components/NoteStack';
 
 function App() {
-  const test = true;
-
   return (
     <AppProvider>
       <MantineProvider withGlobalStyles withNormalizeCSS>
