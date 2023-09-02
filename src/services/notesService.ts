@@ -1,8 +1,15 @@
 import { db } from '../db';
 import { Note } from '../db';
 
+export interface AddNoteResult {
+  status: 'ok' | 'error';
+  message: string | null;
+  note?: Note;
+  id?: number;
+}
+
 const notesService = {
-  add: async function add(note: Partial<Note>) {
+  add: async function add(note: Partial<Note> = {}) {
     const newNote: Note = {
       title: '',
       content: '',
@@ -19,12 +26,12 @@ const notesService = {
         message: `Заметка ${newNote.title} успешно добавлена. Id=${id}`,
         note: newNote,
         id: id,
-      };
+      } as AddNoteResult;
     } catch (error) {
       return {
         status: 'error',
         message: `Ошибка при добавлении заметки ${newNote.title}: ${error}`,
-      };
+      } as AddNoteResult;
     }
   },
   update: async function update(note: Partial<Note>) {
