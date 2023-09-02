@@ -8,15 +8,15 @@ export interface Note {
   updateAt?: number;
 }
 
-export class AppSubClassedDexie extends Dexie {
+export class NotesDB extends Dexie {
   notes!: Table<Note>;
 
   constructor() {
-    super('appDatabase');
+    super('NotesDB');
     this.version(1).stores({
       notes: '++id, title, content, createdAt, updateAt',
     });
   }
 }
 
-export const db = new AppSubClassedDexie();
+export const db = new NotesDB();
