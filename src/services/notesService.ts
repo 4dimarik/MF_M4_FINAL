@@ -1,7 +1,7 @@
 import { db } from '../db';
 import { Note } from '../db';
 
-export interface AddNoteResult {
+export interface ActionResult {
   status: 'ok' | 'error';
   message: string | null;
   note?: Note;
@@ -9,7 +9,7 @@ export interface AddNoteResult {
 }
 
 const notesService = {
-  add: async function add(note: Partial<Note> = {}) {
+  add: async (note: Partial<Note> = {}) => {
     const newNote: Note = {
       title: '',
       content: '',
@@ -26,15 +26,15 @@ const notesService = {
         message: `Заметка ${newNote.title} успешно добавлена. Id=${id}`,
         note: newNote,
         id: id,
-      } as AddNoteResult;
+      } as ActionResult;
     } catch (error) {
       return {
         status: 'error',
         message: `Ошибка при добавлении заметки ${newNote.title}: ${error}`,
-      } as AddNoteResult;
+      } as ActionResult;
     }
   },
-  update: async function update(note: Partial<Note>) {
+  update: async (note: Partial<Note>) => {
     const newNote: Note = {
       title: '',
       content: '',
@@ -44,6 +44,20 @@ const notesService = {
     if (note.id) {
       const updated = await db.notes.update(note.id, newNote);
       console.log(updated);
+    }
+  },
+  detele: async (id: number) => {
+    try {
+      await db.notes.delete(id);
+      return {
+        status: 'ok',
+        message: `Заметка успешно удалена`,
+      } as ActionResult;
+    } catch (error) {
+      return {
+        status: 'error',
+        message: `Ошибка при удалении заметки id=${id}: ${error}`,
+      } as ActionResult;
     }
   },
 };
