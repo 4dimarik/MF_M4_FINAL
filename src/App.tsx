@@ -3,6 +3,9 @@ import TextEditor from './components/TextEditor';
 import { AppProvider } from './context/AppProvider/ui/AppProvider';
 import NoteStack from './components/NoteStack';
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 function App() {
   return (
     <AppProvider>
@@ -26,6 +29,11 @@ function App() {
         >
           <TextEditor />
         </AppShell>
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={true}
+        />
       </MantineProvider>
     </AppProvider>
   );

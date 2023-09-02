@@ -1,5 +1,6 @@
 import { db } from '../db';
 import { Note } from '../db';
+import { toast } from 'react-toastify';
 
 export interface ActionResult {
   status: 'ok' | 'error';
@@ -21,17 +22,25 @@ const notesService = {
     try {
       const id = await db.notes.add(newNote);
 
-      return {
+      const result = {
         status: 'ok',
-        message: `Заметка ${newNote.title} успешно добавлена. Id=${id}`,
+        message: `Заметка '${newNote.title}'успешно добавлена.`,
         note: newNote,
         id: id,
       } as ActionResult;
+
+      toast.success(result.message);
+
+      return result;
     } catch (error) {
-      return {
+      const result = {
         status: 'error',
-        message: `Ошибка при добавлении заметки ${newNote.title}: ${error}`,
+        message: `Ошибка при добавлении заметки '${newNote.title}': ${error}`,
       } as ActionResult;
+
+      toast.error(result.message);
+
+      return result;
     }
   },
   update: async (note: Partial<Note>) => {
@@ -49,15 +58,23 @@ const notesService = {
   detele: async (id: number) => {
     try {
       await db.notes.delete(id);
-      return {
+      const result = {
         status: 'ok',
         message: `Заметка успешно удалена`,
       } as ActionResult;
+
+      toast.success(result.message);
+
+      return result;
     } catch (error) {
-      return {
+      const result = {
         status: 'error',
         message: `Ошибка при удалении заметки id=${id}: ${error}`,
       } as ActionResult;
+
+      toast.error(result.message);
+
+      return result;
     }
   },
 };
