@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { RichTextEditor, Link } from '@mantine/tiptap';
 import { useEditor } from '@tiptap/react';
 import Highlight from '@tiptap/extension-highlight';
@@ -14,21 +13,14 @@ import notesService from '../services/notesService';
 type Props = { activeNote: Note };
 
 function TextEditor({ activeNote }: Props) {
-  console.log('### TextEditor');
-  const [note, setNote] = useState<Note>(activeNote);
-
+  const note = activeNote;
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const updateNote = {
       ...note,
       title: event.currentTarget.value,
     } as Note;
-    setNote(updateNote);
-    console.log('#### Change Title');
+    notesService.update(updateNote);
   };
-
-  useEffect(() => {
-    setTimeout(notesService.update, 500, note);
-  }, [note]);
 
   const title: string = note?.title ?? '';
   const content: string = note?.content ?? '';
