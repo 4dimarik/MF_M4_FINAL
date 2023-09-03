@@ -6,7 +6,8 @@ export type ActiveNoteId = number | null;
 export interface ActiveNote {
   id: ActiveNoteId;
   setId?: (activeNote: ActiveNoteId) => void;
-  value?: Note;
+  editable: boolean;
+  setEditable: (editable: boolean) => void;
 }
 
 export interface AppState {
