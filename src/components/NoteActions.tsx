@@ -4,17 +4,15 @@ import { IconEdit, IconTrash } from '@tabler/icons-react';
 import notesService from '../services/notesService';
 import { AppState, ActiveNote } from '../context/AppProvider/models';
 import { useAppState } from '../context/AppProvider';
+import { useParams } from 'react-router-dom';
 
-type Props = {
-  id: number | undefined;
-};
-
-const NoteActions = memo(function NoteActions({ id }: Props) {
+const NoteActions = memo(function NoteActions() {
+  const { id } = useParams();
   const appState: AppState | null = useAppState();
   const { editable, setEditable } = appState?.activeNote as ActiveNote;
 
   const handleDelete = () => {
-    if (typeof id === 'number') notesService.delete(id);
+    if (id) notesService.delete(Number(id));
   };
 
   const toggleNoteEditable = () => {
@@ -22,12 +20,12 @@ const NoteActions = memo(function NoteActions({ id }: Props) {
   };
 
   return (
-    <Flex w="2.6rem" justify="space-between" mr={4}>
+    <Flex w="2.6rem" justify="space-between" mx="sm">
       <ActionIcon color="orange" onClick={toggleNoteEditable}>
-        <IconEdit size="1rem" stroke={1.5} />
+        <IconEdit size="1.2rem" stroke={1.5} />
       </ActionIcon>
       <ActionIcon color="red" onClick={handleDelete}>
-        <IconTrash size="1rem" stroke={1.5} />
+        <IconTrash size="1.2rem" stroke={1.5} />
       </ActionIcon>
     </Flex>
   );

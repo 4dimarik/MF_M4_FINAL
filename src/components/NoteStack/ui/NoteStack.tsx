@@ -1,23 +1,21 @@
 import { Navbar, Box, NavLink, Divider } from '@mantine/core';
 import { IconPlus } from '@tabler/icons-react';
-import { useAppState } from '../../../context/AppProvider/hooks/useAppState';
 import notesService from '../../../services/notesService';
 import { ActionResult } from '../../../services/notesService';
-import { AppState } from '../../../context/AppProvider/models';
 import NoteButton from './NoteButton';
+import { useNavigate } from 'react-router-dom';
+import { Note, db } from '../../../db';
+import { useLiveQuery } from 'dexie-react-hooks';
 
 export default function NoteStack() {
-  const { activeNote, notes } = useAppState() as AppState;
+  const navigate = useNavigate();
+  const notes: Note[] | undefined = useLiveQuery(() =>
+    db.notes.orderBy('updatedAt').reverse().toArray()
+  );
 
   const addNewNote = async () => {
     const result: ActionResult = await notesService.add();
-    if (
-      result.status === 'ok' &&
-      activeNote?.setId !== undefined &&
-      typeof result.id === 'number'
-    ) {
-      activeNote.setId(result.id);
-    }
+    if (result.status === 'ok') navigate(`/${result.id}`);
   };
 
   return (

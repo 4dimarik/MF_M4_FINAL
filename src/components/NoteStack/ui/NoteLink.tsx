@@ -1,6 +1,5 @@
 import { memo } from 'react';
 import { NavLink } from '@mantine/core';
-import NoteActions from '../../NoteActions';
 import { NoteDTView } from '../../NoteDTView';
 import { Note } from '../../../db';
 
@@ -16,7 +15,6 @@ const NoteLink = memo(function NoteLink({ note, isActive }: Props) {
       component="div"
       label={note.title}
       description={<NoteDTView dt={note.updatedAt} />}
-      rightSection={<NoteActions id={note.id} />}
       active={isActive}
     />
   );
