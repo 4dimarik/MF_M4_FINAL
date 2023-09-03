@@ -7,8 +7,6 @@ import { useAppState } from '../context/AppProvider';
 export default function IndexLayout() {
   const appState: AppState | null = useAppState();
   const notes = appState?.notes;
-  const activeNote = appState?.activeNote;
-  console.log(activeNote);
   return (
     <AppShell
       padding="md"
