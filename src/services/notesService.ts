@@ -1,6 +1,7 @@
 import { db } from '../db';
 import { Note } from '../db';
 import { toast } from 'react-toastify';
+import moment from 'moment';
 
 export interface ActionResult {
   status: 'ok' | 'error';
@@ -14,8 +15,8 @@ const notesService = {
     const newNote: Note = {
       title: '',
       content: '',
-      createdAt: Date.now(),
-      updateAt: Date.now(),
+      createdAt: moment.utc().unix(),
+      updatedAt: moment.utc().unix(),
       ...note,
     };
 
@@ -48,14 +49,14 @@ const notesService = {
       title: '',
       content: '',
       ...note,
-      updateAt: Date.now(),
+      updatedAt: moment.utc().unix(),
     };
     if (note.id) {
       const updated = await db.notes.update(note.id, newNote);
       console.log(updated);
     }
   },
-  detele: async (id: number) => {
+  delete: async (id: number) => {
     try {
       await db.notes.delete(id);
       const result = {
@@ -75,6 +76,20 @@ const notesService = {
       toast.error(result.message);
 
       return result;
+    }
+  },
+  get: async (id: number) => {
+    try {
+      return await db.notes.get(id);
+    } catch (error) {
+      const result = {
+        status: 'error',
+        message: `Заметки id=${id} не найдена: ${error}`,
+      } as ActionResult;
+
+      toast.error(result.message);
+
+      return undefined;
     }
   },
 };

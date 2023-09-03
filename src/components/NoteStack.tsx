@@ -2,24 +2,26 @@ import { Navbar, Box, NavLink, Divider } from '@mantine/core';
 import { IconPlus } from '@tabler/icons-react';
 import { useAppState } from '../context/AppProvider/hooks/useAppState';
 import notesService from '../services/notesService';
-import { AddNoteResult } from '../services/notesService';
+import { ActionResult } from '../services/notesService';
 import { AppState } from '../context/AppProvider/models';
 import NoteActions from './NoteActions';
+import moment from 'moment';
+import { NoteDTView } from './NoteDTView';
 
 export default function NoteStack() {
   const { activeNote, notes } = useAppState() as AppState;
-  console.log(notes);
 
   const addNewNote = async () => {
-    const result: AddNoteResult = await notesService.add();
+    const result: ActionResult = await notesService.add();
     if (
       result.status === 'ok' &&
-      activeNote?.set !== undefined &&
+      activeNote?.setId !== undefined &&
       typeof result.id === 'number'
     ) {
-      activeNote.set(result.id);
+      console.log('###########123');
+      activeNote.setId(result.id);
     }
-    console.log(activeNote);
+    console.log('#### Add New', activeNote);
   };
 
   return (
@@ -37,8 +39,9 @@ export default function NoteStack() {
               key={note.id}
               component="div"
               label={note.title}
-              description="Additional information"
+              description={<NoteDTView dt={note.updatedAt} />}
               rightSection={<NoteActions id={note.id} />}
+              active={activeNote.id === note.id}
               // sx={
               //   test
               //     ? { '& .mantine-NavLink-label': { fontWeight: 'bold' } }

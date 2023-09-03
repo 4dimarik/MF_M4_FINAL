@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Flex, ActionIcon } from '@mantine/core';
 import { IconEdit, IconTrash } from '@tabler/icons-react';
 import notesService from '../services/notesService';
@@ -6,10 +7,10 @@ type Props = {
   id: number | undefined;
 };
 
-export default function NoteActions({ id }: Props) {
+const NoteActions = memo(function NoteActions({ id }: Props) {
   const handleDelete = () => {
     console.log('DELETE', id);
-    if (typeof id === 'number') notesService.detele(id);
+    if (typeof id === 'number') notesService.delete(id);
   };
   console.log(id);
   return (
@@ -22,4 +23,6 @@ export default function NoteActions({ id }: Props) {
       </ActionIcon>
     </Flex>
   );
-}
+});
+
+export default NoteActions;

@@ -1,41 +1,46 @@
-import { MantineProvider, AppShell, Header } from '@mantine/core';
-import TextEditor from './components/TextEditor';
-import { AppProvider } from './context/AppProvider/ui/AppProvider';
-import NoteStack from './components/NoteStack';
+import { lazy } from 'react';
+import { useRoutes } from 'react-router-dom';
+import IndexLayout from './layouts/IndexLayout';
+import SuspenseComponent from './components/SuspenseComponent';
+import { MantineProvider } from '@mantine/core';
+import IndexPage from './pages/IndexPage';
 
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+const NotePage = lazy(() => import('./pages/NotePage'));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
 function App() {
+  const elements = useRoutes([
+    {
+      path: '/',
+      element: <IndexLayout />,
+      children: [
+        {
+          index: true,
+          element: <IndexPage />,
+        },
+        {
+          path: ':id',
+          element: (
+            <SuspenseComponent>
+              <NotePage />
+            </SuspenseComponent>
+          ),
+        },
+      ],
+    },
+    {
+      path: '*',
+      element: (
+        <SuspenseComponent>
+          <NotFoundPage />
+        </SuspenseComponent>
+      ),
+    },
+  ]);
   return (
-    <AppProvider>
-      <MantineProvider withGlobalStyles withNormalizeCSS>
-        <AppShell
-          padding="md"
-          navbar={<NoteStack />}
-          header={
-            <Header height={60} p="xs">
-              <></>
-            </Header>
-          }
-          styles={(theme) => ({
-            main: {
-              backgroundColor:
-                theme.colorScheme === 'dark'
-                  ? theme.colors.dark[8]
-                  : theme.colors.gray[0],
-            },
-          })}
-        >
-          <TextEditor />
-        </AppShell>
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          hideProgressBar={true}
-        />
-      </MantineProvider>
-    </AppProvider>
+    <MantineProvider withGlobalStyles withNormalizeCSS>
+      {elements}
+    </MantineProvider>
   );
 }
 

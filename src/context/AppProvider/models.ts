@@ -4,8 +4,9 @@ import { Note } from '../../db';
 export type ActiveNoteId = number | null;
 
 export interface ActiveNote {
-  value: ActiveNoteId;
-  set?: (activeNote: ActiveNoteId) => void;
+  id: ActiveNoteId;
+  setId?: (activeNote: ActiveNoteId) => void;
+  value?: Note;
 }
 
 export interface AppState {
