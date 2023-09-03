@@ -1,6 +1,6 @@
-import { AppShell, Header, Box } from '@mantine/core';
-import { Navigate, Outlet, useParams } from 'react-router-dom';
-import NoteStack from '../components/NavBarItems/ui/NoteStack';
+import { AppShell, Header } from '@mantine/core';
+import { Outlet } from 'react-router-dom';
+import { NoteStack } from '../components/NoteStack';
 import { AppState } from '../context/AppProvider/models';
 import { useAppState } from '../context/AppProvider';
 
