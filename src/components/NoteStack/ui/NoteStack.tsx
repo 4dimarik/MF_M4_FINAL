@@ -29,7 +29,7 @@ export default function NoteStack() {
           onClick={() => addNewNote()}
         />
         <Divider my="sm" />
-        {notes && notes.map((note) => <NoteButton note={note} />)}
+        {notes && notes.map((note) => <NoteButton key={note.id} note={note} />)}
       </Box>
     </Navbar>
   );
