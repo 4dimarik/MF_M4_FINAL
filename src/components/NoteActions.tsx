@@ -1,15 +1,16 @@
 import { memo } from 'react';
-import { Flex, ActionIcon } from '@mantine/core';
-import { IconEdit, IconTrash } from '@tabler/icons-react';
+import { Flex, ActionIcon, TextInput } from '@mantine/core';
+import { IconEdit, IconTrash, IconSearch } from '@tabler/icons-react';
 import notesService from '../services/notesService';
-import { AppState, ActiveNote } from '../context/AppProvider/models';
+import { IAppState, IActiveNote, ISearch } from '../context/AppProvider/models';
 import { useAppState } from '../context/AppProvider';
 import { useParams } from 'react-router-dom';
 
 const NoteActions = memo(function NoteActions() {
   const { id } = useParams();
-  const appState: AppState | null = useAppState();
-  const { editable, setEditable } = appState?.activeNote as ActiveNote;
+  const appState: IAppState | null = useAppState();
+  const { editable, setEditable } = appState?.activeNote as IActiveNote;
+  const { value: search, setValue: setSearch } = appState?.search as ISearch;
 
   const handleDelete = () => {
     if (id) notesService.delete(Number(id));
@@ -19,14 +20,26 @@ const NoteActions = memo(function NoteActions() {
     setEditable(!editable);
   };
 
+  const handleChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.currentTarget.value);
+  };
+
   return (
-    <Flex w="2.6rem" justify="space-between" mx="sm">
+    <Flex justify="space-between" mx="sm">
       <ActionIcon color="orange" onClick={toggleNoteEditable}>
         <IconEdit size="1.2rem" stroke={1.5} />
       </ActionIcon>
       <ActionIcon color="red" onClick={handleDelete}>
         <IconTrash size="1.2rem" stroke={1.5} />
       </ActionIcon>
+      <TextInput
+        placeholder="Поиск"
+        icon={<IconSearch size="0.8rem" />}
+        size="xs"
+        ml="sm"
+        value={search}
+        onChange={handleChangeSearch}
+      />
     </Flex>
   );
 });
