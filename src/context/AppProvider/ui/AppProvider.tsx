@@ -1,14 +1,15 @@
 import { createContext, useEffect, useState } from 'react';
-import { ActiveNoteId, AppState, Props, ActiveNote } from '../models';
+import { ActiveNoteId, IAppState, Props, IActiveNote } from '../models';
 import { db } from '../../../db';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { Note } from '../../../db';
 
-const AppContext = createContext<AppState | null>(null);
+const AppContext = createContext<IAppState | null>(null);
 
 function AppProvider({ children }: Props) {
   const [activeNoteId, setActiveNoteId] = useState<ActiveNoteId>(null);
   const [editable, setEditable] = useState<boolean>(false);
+  const [searchString, setSearchString] = useState<string>('');
   const notes: Note[] | undefined = useLiveQuery(() =>
     db.notes.orderBy('updatedAt').reverse().toArray()
   );
@@ -21,13 +22,14 @@ function AppProvider({ children }: Props) {
     }
   }, [notes]);
 
-  const value: AppState | null = {
+  const value: IAppState | null = {
     activeNote: {
       id: activeNoteId,
       setId: setActiveNoteId,
       editable,
       setEditable,
-    } as ActiveNote,
+    } as IActiveNote,
+    search: { value: searchString, setValue: setSearchString },
     notes: notes,
   };
 
