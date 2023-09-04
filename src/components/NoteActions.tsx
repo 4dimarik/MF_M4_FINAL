@@ -5,6 +5,7 @@ import notesService from '../services/notesService';
 import { IAppState, IActiveNote, ISearch } from '../context/AppProvider/models';
 import { useAppState } from '../context/AppProvider';
 import { useParams } from 'react-router-dom';
+import { IChangeEventHandler } from '../models';
 
 const NoteActions = memo(function NoteActions() {
   const { id } = useParams();
@@ -20,7 +21,7 @@ const NoteActions = memo(function NoteActions() {
     setEditable(!editable);
   };
 
-  const handleChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeSearch: IChangeEventHandler = (event) => {
     setSearch(event.currentTarget.value);
   };
 
