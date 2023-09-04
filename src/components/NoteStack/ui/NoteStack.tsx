@@ -46,7 +46,11 @@ export default function NoteStack() {
 
   useEffect(() => {
     if (search !== '' && notes) {
-      navigate(`/note/${notes[0].id}`);
+      if (notes.length === 0) {
+        navigate('/note/notfound');
+      } else {
+        navigate(`/note/${notes[0].id}`);
+      }
     }
   }, [search, notes]);
 

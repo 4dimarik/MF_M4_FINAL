@@ -8,6 +8,7 @@ import { PrivateRoute } from './PrivateRoute';
 const NotePage = lazy(() => import('../../../pages/NotePage'));
 const NotFoundPage = lazy(() => import('../../../pages/NotFoundPage'));
 const SignInPage = lazy(() => import('../../../pages/SignInPage'));
+const NotFoundNotePage = lazy(() => import('../../../pages/NotFoundNotePage'));
 
 function AppRouter() {
   const routes = [
@@ -28,6 +29,14 @@ function AppRouter() {
           element: (
             <SuspenseComponent>
               <NotePage />
+            </SuspenseComponent>
+          ),
+        },
+        {
+          path: 'note/notfound',
+          element: (
+            <SuspenseComponent>
+              <NotFoundNotePage />
             </SuspenseComponent>
           ),
         },
