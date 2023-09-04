@@ -15,8 +15,6 @@ function AuthProvider({ children }: Props) {
     getInitialValueInEffect: false,
   } as ILocalStorage);
 
-  console.log(user);
-
   const signin: SignIn = (newUser, callback) => {
     setValue(newUser);
     callback();

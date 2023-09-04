@@ -10,8 +10,6 @@ function PrivateRoute({ children }: Props) {
   const auth: IAuth | null = useAuth();
   const location = useLocation();
 
-  console.log(auth);
-
   if (auth?.user === null) {
     return <Navigate to="/login" state={{ from: location.pathname }} replace />;
   }
