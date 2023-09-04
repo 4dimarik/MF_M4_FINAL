@@ -1,21 +1,18 @@
-import { AppShell, Header } from '@mantine/core';
+import { AppShell } from '@mantine/core';
 import { Outlet } from 'react-router-dom';
 import { NoteStack } from '../components/NoteStack';
-import { AppState } from '../context/AppProvider/models';
+import { IAppState } from '../context/AppProvider/models';
 import { useAppState } from '../context/AppProvider';
+import { HeaderBlock } from '../components/HeaderBlock';
 
 export default function IndexLayout() {
-  const appState: AppState | null = useAppState();
+  const appState: IAppState | null = useAppState();
   const notes = appState?.notes;
   return (
     <AppShell
       padding="md"
       navbar={notes && <NoteStack />}
-      header={
-        <Header height={60} p="xs">
-          <></>
-        </Header>
-      }
+      header={<HeaderBlock />}
       styles={(theme) => ({
         main: {
           backgroundColor:
