@@ -61,16 +61,17 @@ export default function NotFoundPage() {
       <div className={classes.inner}>
         <Illustration className={classes.image} />
         <div className={classes.content}>
-          <Title className={classes.title}>Nothing to see here</Title>
+          <Title className={classes.title}>Здесь не на что смотреть</Title>
           <Text
             color="dimmed"
             size="lg"
             align="center"
             className={classes.description}
           >
-            Page you are trying to open does not exist. You may have mistyped
-            the address, or the page has been moved to another URL. If you think
-            this is an error contact support.
+            Страница, которую вы пытаетесь открыть, не существует. Возможно, вы
+            ошиблись в вводе адрес или страница была перемещена на другой
+            URL-адрес. Если вы считаете , что это ошибка, обратитесь в службу
+            поддержки.
           </Text>
           <Group position="center">
             <Button size="md">Take me back to home page</Button>

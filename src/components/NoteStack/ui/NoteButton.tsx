@@ -10,7 +10,7 @@ type Props = {
 
 const NoteButton = memo(function NoteButton({ note }: Props) {
   return (
-    <NavLink to={`/${note.id}`} className="navlink">
+    <NavLink to={`note/${note.id}`} className="navlink">
       {({ isActive }) => <NoteLink note={note} isActive={isActive} />}
     </NavLink>
   );
