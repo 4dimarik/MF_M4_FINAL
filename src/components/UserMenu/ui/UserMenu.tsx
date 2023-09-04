@@ -75,7 +75,7 @@ function UserMenu() {
               icon={<IconLogout size="0.9rem" stroke={1.5} />}
               onClick={handleSignOut}
             >
-              Logout
+              Выход
             </Menu.Item>
             <Menu.Item
               icon={<IconDatabaseX size="0.9rem" stroke={1.5} />}
