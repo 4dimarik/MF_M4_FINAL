@@ -39,14 +39,14 @@ export default function NoteStack() {
   const addNewNote = async () => {
     const result: ActionResult = await notesService.add();
     if (result.status === 'ok') {
-      navigate(`/${result.id}`);
+      navigate(`/note/${result.id}`);
       setEditable(true);
     }
   };
 
   useEffect(() => {
     if (search !== '' && notes) {
-      navigate(`/${notes[0].id}`);
+      navigate(`/note/${notes[0].id}`);
     }
   }, [search, notes]);
 
