@@ -1,4 +1,5 @@
 import Dexie, { Table } from 'dexie';
+import defaultNotes from './defaultNotes';
 
 export interface Note {
   id?: number;
@@ -20,3 +21,12 @@ export class NotesDB extends Dexie {
 }
 
 export const db = new NotesDB();
+
+db.on('populate', defaultNotes);
+
+export function resetDatabase() {
+  return db.transaction('rw', db.notes, async () => {
+    await Promise.all(db.tables.map((table) => table.clear()));
+    await defaultNotes();
+  });
+}
