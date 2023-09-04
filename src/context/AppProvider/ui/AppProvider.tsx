@@ -15,7 +15,6 @@ function AppProvider({ children }: Props) {
   );
 
   useEffect(() => {
-    console.log(notes);
     if (activeNoteId === null && notes && notes?.length > 0) {
       const id: number | null = notes[0].id ?? null;
       setActiveNoteId(id);

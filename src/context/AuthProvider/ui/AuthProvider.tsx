@@ -12,7 +12,10 @@ function AuthProvider({ children }: Props) {
   const [user, setValue, removeValue] = useLocalStorage({
     key: 'user',
     defaultValue: null,
+    getInitialValueInEffect: false,
   } as ILocalStorage);
+
+  console.log(user);
 
   const signin: SignIn = (newUser, callback) => {
     setValue(newUser);
