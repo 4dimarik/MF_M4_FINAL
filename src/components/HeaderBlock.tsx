@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { Header, Flex, Title } from '@mantine/core';
-import NoteActions from './NoteActions';
+import { NoteActions } from './NoteAction';
 import { UserMenu } from './UserMenu';
 
 const HeaderBlock = memo(function HeaderBlock() {
