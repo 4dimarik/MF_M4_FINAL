@@ -4,8 +4,7 @@ import notesService from '../../../services/notesService';
 import { ActionResult } from '../../../services/notesService';
 import NoteButton from './NoteButton';
 import { useNavigate } from 'react-router-dom';
-import { Note, db } from '../../../db';
-import { useLiveQuery } from 'dexie-react-hooks';
+import { Note } from '../../../db';
 import {
   IAppState,
   ISearch,
@@ -19,22 +18,7 @@ export default function NoteStack() {
   const appState: IAppState | null = useAppState();
   const { value: search } = appState?.search as ISearch;
   const { setEditable } = appState?.activeNote as IActiveNote;
-
-  const notes: Note[] | undefined = useLiveQuery(
-    () =>
-      search === ''
-        ? db.notes.orderBy('updatedAt').reverse().toArray()
-        : db.notes
-            .orderBy('updatedAt')
-            .reverse()
-            .filter((note) => {
-              const regexp = new RegExp(search, 'ig');
-              return regexp.test(note.content) || regexp.test(note.title);
-            })
-            .toArray(),
-    [search],
-    undefined
-  );
+  const notes: Note[] | undefined = appState?.notes;
 
   const addNewNote = async () => {
     const result: ActionResult = await notesService.add();
