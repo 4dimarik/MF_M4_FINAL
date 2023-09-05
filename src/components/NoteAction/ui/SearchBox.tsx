@@ -10,7 +10,7 @@ function SearchBox() {
   const { value: search, setValue: setSearch } = appState?.search as ISearch;
 
   const handleChangeSearch: IChangeEventHandler = (event) => {
-    setSearch(event.currentTarget.value);
+    setSearch(event.currentTarget.value.trim());
   };
   console.log(search !== '');
 
