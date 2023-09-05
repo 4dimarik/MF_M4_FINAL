@@ -35,7 +35,6 @@ export default function NoteStack() {
         navigate('/note/notfound');
       } else {
         if (id != notes[0].id) {
-          console.log('navigatre');
           navigate(`/note/${notes[0].id}`);
         }
       }

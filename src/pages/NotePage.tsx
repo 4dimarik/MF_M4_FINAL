@@ -6,7 +6,6 @@ import { IActiveNote } from '../context/AppProvider/models';
 import { useActiveNote } from '../context/AppProvider';
 
 export default function NotePage() {
-  console.log('NotePage');
   const { id } = useParams();
   let note: Note | undefined = undefined;
   note = useLiveQuery(() => db.notes.get(Number(id)), [id], undefined);

@@ -5,14 +5,12 @@ import { ISearch, IAppState } from '../../../context/AppProvider/models';
 import { IChangeEventHandler } from '../../../models';
 
 function SearchBox() {
-  console.log('SearchBox');
   const appState: IAppState | null = useAppState();
   const { value: search, setValue: setSearch } = appState?.search as ISearch;
 
   const handleChangeSearch: IChangeEventHandler = (event) => {
     setSearch(event.currentTarget.value.trim());
   };
-  console.log(search !== '');
 
   return (
     <TextInput

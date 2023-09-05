@@ -18,7 +18,6 @@ function getTitle(htmlString: string) {
 }
 
 const TextEditor = memo(function TextEditor({ note, editable }: Props) {
-  console.log('TextEditor');
   const content: string = note?.content ?? '';
 
   const editor = useEditor({
