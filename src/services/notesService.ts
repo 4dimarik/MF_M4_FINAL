@@ -52,8 +52,7 @@ const notesService = {
       updatedAt: moment.utc().unix(),
     };
     if (note.id) {
-      const updated = await db.notes.update(note.id, newNote);
-      console.log(updated);
+      db.notes.update(note.id, newNote);
     }
   },
   delete: async (id: number) => {

@@ -44,7 +44,6 @@ function TextEditor({ activeNote }: Props) {
     autofocus: 'end',
     onUpdate({ editor }) {
       if (content !== editor.getHTML()) {
-        console.log('### SAVE Update');
         const updateNote = {
           ...activeNote,
           title: getTitle(editor.getHTML()),
