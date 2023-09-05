@@ -1,13 +1,12 @@
 import { Navigate } from 'react-router-dom';
-import { IAppState } from '../context/AppProvider/models';
-import { useAppState } from '../context/AppProvider';
+import { useFirstNoteId } from '../context/AppProvider';
 
 export default function IndexPage() {
-  const appState: IAppState | null = useAppState();
-  const activeNoteId = appState?.activeNote.id;
+  const id = useFirstNoteId();
 
-  if (activeNoteId) {
-    return <Navigate to={`/note/${activeNoteId}`} replace />;
+  if (id) {
+    return <Navigate to={`/note/${id}`} replace />;
   }
+
   return <div>IndexPage</div>;
 }
