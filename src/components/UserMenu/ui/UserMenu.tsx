@@ -47,6 +47,11 @@ function UserMenu() {
     auth?.signout(() => navigate('/'));
   };
 
+  const handleResetDatabase = () => {
+    resetDatabase();
+    navigate('/');
+  };
+
   return (
     <Menu
       width={260}
@@ -79,7 +84,7 @@ function UserMenu() {
             </Menu.Item>
             <Menu.Item
               icon={<IconDatabaseX size="0.9rem" stroke={1.5} />}
-              onClick={resetDatabase}
+              onClick={handleResetDatabase}
             >
               Сброс БД
             </Menu.Item>
