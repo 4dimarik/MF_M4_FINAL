@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from 'react';
-import { ActiveNoteId, IAppState, Props, IActiveNote } from '../models';
+import { FirstNoteId, IAppState, Props, IActiveNote } from '../models';
 import { db } from '../../../db';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { Note } from '../../../db';
@@ -7,28 +7,49 @@ import { Note } from '../../../db';
 const AppContext = createContext<IAppState | null>(null);
 
 function AppProvider({ children }: Props) {
-  const [activeNoteId, setActiveNoteId] = useState<ActiveNoteId>(null);
+  // const [activeNoteId, setActiveNoteId] = useState<ActiveNoteId>(null);
+  const [firstNoteId, setFirstNoteId] = useState<FirstNoteId>(null);
   const [editable, setEditable] = useState<boolean>(false);
   const [searchString, setSearchString] = useState<string>('');
-  const notes: Note[] | undefined = useLiveQuery(() =>
-    db.notes.orderBy('updatedAt').reverse().toArray()
+  const notes: Note[] | undefined = useLiveQuery(
+    () =>
+      searchString === ''
+        ? db.notes.orderBy('updatedAt').reverse().toArray()
+        : db.notes
+            .orderBy('updatedAt')
+            .reverse()
+            .filter((note) => {
+              const regexp = new RegExp(searchString, 'ig');
+              return regexp.test(note.content) || regexp.test(note.title);
+            })
+            .toArray(),
+    [searchString],
+    undefined
   );
 
+  // useEffect(() => {
+  //   if (activeNoteId === null && notes && notes?.length > 0) {
+  //     const id: number | null = notes[0].id ?? null;
+  //     setActiveNoteId(id);
+  //   }
+  // }, [notes]);
+
   useEffect(() => {
-    if (activeNoteId === null && notes && notes?.length > 0) {
+    if (notes && notes?.length > 0) {
       const id: number | null = notes[0].id ?? null;
-      setActiveNoteId(id);
+      setFirstNoteId(id);
     }
   }, [notes]);
 
   const value: IAppState | null = {
     activeNote: {
-      id: activeNoteId,
-      setId: setActiveNoteId,
+      // id: activeNoteId,
+      // setId: setActiveNoteId,
       editable,
       setEditable,
     } as IActiveNote,
     search: { value: searchString, setValue: setSearchString },
+    firstNoteId,
     notes: notes,
   };
 

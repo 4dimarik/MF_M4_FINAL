@@ -1,11 +1,9 @@
 import { ReactNode } from 'react';
 import { Note } from '../../db';
 
-export type ActiveNoteId = number | null;
+export type FirstNoteId = number | null;
 
 export interface IActiveNote {
-  id: ActiveNoteId;
-  setId?: (activeNote: ActiveNoteId) => void;
   editable: boolean;
   setEditable: (editable: boolean) => void;
 }
@@ -17,6 +15,7 @@ export interface ISearch {
 
 export interface IAppState {
   activeNote: IActiveNote;
+  firstNoteId: FirstNoteId;
   search: ISearch;
   notes: Note[] | undefined;
 }
