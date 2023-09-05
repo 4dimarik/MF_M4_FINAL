@@ -8,28 +8,18 @@ import Superscript from '@tiptap/extension-superscript';
 import SubScript from '@tiptap/extension-subscript';
 import { Note } from '../db';
 import notesService from '../services/notesService';
-import { IAppState } from '../context/AppProvider/models';
-import { useAppState } from '../context/AppProvider';
-import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useEffect, memo } from 'react';
 
-type Props = { activeNote: Note };
+type Props = { note: Note; editable: boolean };
 
 function getTitle(htmlString: string) {
   const doc = new DOMParser().parseFromString(htmlString, 'text/html');
   return doc.querySelector('body>*')?.textContent;
 }
 
-function TextEditor({ activeNote }: Props) {
-  const { id } = useParams();
-  const appState: IAppState | null = useAppState();
-
-  const isEditable: boolean =
-    appState?.activeNote.editable !== undefined
-      ? appState?.activeNote.editable
-      : false;
-
-  const content: string = activeNote?.content ?? '';
+const TextEditor = memo(function TextEditor({ note, editable }: Props) {
+  console.log('TextEditor');
+  const content: string = note?.content ?? '';
 
   const editor = useEditor({
     extensions: [
@@ -41,11 +31,10 @@ function TextEditor({ activeNote }: Props) {
       Highlight,
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
     ],
-    autofocus: 'end',
     onUpdate({ editor }) {
       if (content !== editor.getHTML()) {
         const updateNote = {
-          ...activeNote,
+          ...note,
           title: getTitle(editor.getHTML()),
           content: editor.getHTML(),
         } as Note;
@@ -59,21 +48,20 @@ function TextEditor({ activeNote }: Props) {
     if (editor) {
       editor.commands.setContent(content);
     }
-  }, [id, editor]);
+  }, [editor]);
 
   useEffect(() => {
     if (editor) {
-      editor.setEditable(isEditable);
-      if (isEditable) editor.commands.focus();
+      editor.setEditable(editable);
     }
-  }, [isEditable, editor]);
+  }, [editable, editor]);
 
   return (
     <RichTextEditor editor={editor} sx={{ border: 'none', m: '.5rem' }}>
       <RichTextEditor.Toolbar
         sticky
         stickyOffset={60}
-        display={isEditable ? 'flex' : 'none'}
+        display={editable ? 'flex' : 'none'}
       >
         <RichTextEditor.ControlsGroup>
           <RichTextEditor.Bold />
@@ -115,6 +103,6 @@ function TextEditor({ activeNote }: Props) {
       />
     </RichTextEditor>
   );
-}
+});
 
 export default TextEditor;

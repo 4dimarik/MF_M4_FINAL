@@ -3,7 +3,7 @@ import { IconPlus } from '@tabler/icons-react';
 import notesService from '../../../services/notesService';
 import { ActionResult } from '../../../services/notesService';
 import NoteButton from './NoteButton';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Note } from '../../../db';
 import {
   IAppState,
@@ -14,6 +14,7 @@ import { useAppState } from '../../../context/AppProvider';
 import { useEffect } from 'react';
 
 export default function NoteStack() {
+  const { id } = useParams();
   const navigate = useNavigate();
   const appState: IAppState | null = useAppState();
   const { value: search } = appState?.search as ISearch;
@@ -33,7 +34,10 @@ export default function NoteStack() {
       if (notes.length === 0) {
         navigate('/note/notfound');
       } else {
-        navigate(`/note/${notes[0].id}`);
+        if (id != notes[0].id) {
+          console.log('navigatre');
+          navigate(`/note/${notes[0].id}`);
+        }
       }
     }
   }, [search, notes]);

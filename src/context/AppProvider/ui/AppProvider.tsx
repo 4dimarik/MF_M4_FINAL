@@ -7,7 +7,6 @@ import { Note } from '../../../db';
 const AppContext = createContext<IAppState | null>(null);
 
 function AppProvider({ children }: Props) {
-  // const [activeNoteId, setActiveNoteId] = useState<ActiveNoteId>(null);
   const [firstNoteId, setFirstNoteId] = useState<FirstNoteId>(null);
   const [editable, setEditable] = useState<boolean>(false);
   const [searchString, setSearchString] = useState<string>('');
@@ -27,13 +26,6 @@ function AppProvider({ children }: Props) {
     undefined
   );
 
-  // useEffect(() => {
-  //   if (activeNoteId === null && notes && notes?.length > 0) {
-  //     const id: number | null = notes[0].id ?? null;
-  //     setActiveNoteId(id);
-  //   }
-  // }, [notes]);
-
   useEffect(() => {
     if (notes && notes?.length > 0) {
       const id: number | null = notes[0].id ?? null;
@@ -43,8 +35,6 @@ function AppProvider({ children }: Props) {
 
   const value: IAppState | null = {
     activeNote: {
-      // id: activeNoteId,
-      // setId: setActiveNoteId,
       editable,
       setEditable,
     } as IActiveNote,
