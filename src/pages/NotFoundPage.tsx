@@ -3,11 +3,11 @@ import {
   Container,
   Title,
   Text,
-  Button,
   Group,
   rem,
 } from '@mantine/core';
 import { Illustration } from '../components/Illustration';
+import { BackBtn } from '../components/BackBtn';
 
 const useStyles = createStyles((theme) => ({
   root: {
@@ -74,7 +74,7 @@ export default function NotFoundPage() {
             поддержки.
           </Text>
           <Group position="center">
-            <Button size="md">Take me back to home page</Button>
+            <BackBtn />
           </Group>
         </div>
       </div>
