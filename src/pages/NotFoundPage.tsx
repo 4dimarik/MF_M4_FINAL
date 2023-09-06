@@ -5,6 +5,7 @@ import {
   Text,
   Group,
   rem,
+  Button,
 } from '@mantine/core';
 import { Illustration } from '../components/Illustration';
 import { BackBtn } from '../components/BackBtn';
@@ -74,7 +75,11 @@ export default function NotFoundPage() {
             поддержки.
           </Text>
           <Group position="center">
-            <BackBtn />
+            <BackBtn>
+              <Button variant="subtle" size="md">
+                Назад
+              </Button>
+            </BackBtn>
           </Group>
         </div>
       </div>
