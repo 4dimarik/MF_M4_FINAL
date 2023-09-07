@@ -22,7 +22,7 @@ export class NotesDB extends Dexie {
 
 export const db = new NotesDB();
 
-db.on('populate', defaultNotes);
+// db.on('populate', defaultNotes);
 
 export function resetDatabase() {
   return db.transaction('rw', db.notes, async () => {

@@ -1,8 +1,7 @@
 import { createContext, useEffect, useState } from 'react';
-import { FirstNoteId, IAppState, Props, IActiveNote } from '../models';
-import { db } from '../../../db';
+import { FirstNoteId, IAppState, Props, IActiveNote, Notes } from '../models';
+import notesService from '../../../services/notesService';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { Note } from '../../../db';
 
 const AppContext = createContext<IAppState | null>(null);
 
@@ -10,26 +9,27 @@ function AppProvider({ children }: Props) {
   const [firstNoteId, setFirstNoteId] = useState<FirstNoteId>(null);
   const [editable, setEditable] = useState<boolean>(false);
   const [searchString, setSearchString] = useState<string>('');
-  const notes: Note[] | undefined = useLiveQuery(
-    () =>
-      searchString === ''
-        ? db.notes.orderBy('updatedAt').reverse().toArray()
-        : db.notes
-            .orderBy('updatedAt')
-            .reverse()
-            .filter((note) => {
-              const regexp = new RegExp(searchString, 'ig');
-              return regexp.test(note.content) || regexp.test(note.title);
-            })
-            .toArray(),
+  const [notes, setNotes] = useState<Notes>(undefined);
+
+  useLiveQuery(
+    async () => {
+      if (searchString === '') {
+        const _notes: Notes = await notesService.fetchAll();
+        setNotes(_notes);
+      } else {
+        const _notes: Notes = await notesService.fetch(searchString);
+        setNotes(_notes);
+      }
+    },
     [searchString],
     undefined
-  );
+  ) as Notes;
 
   useEffect(() => {
     if (notes && notes?.length > 0) {
-      const id: number | null = notes[0].id ?? null;
-      setFirstNoteId(id);
+      setFirstNoteId(notes[0].id as FirstNoteId);
+    } else {
+      setFirstNoteId(null);
     }
   }, [notes]);
 
@@ -40,6 +40,7 @@ function AppProvider({ children }: Props) {
     } as IActiveNote,
     search: { value: searchString, setValue: setSearchString },
     firstNoteId,
+    setFirstNoteId,
     notes: notes,
   };
 

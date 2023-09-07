@@ -17,6 +17,8 @@ import { useAuth } from '../../../context/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import { IAuth } from '../../../context/AuthProvider/models';
 import { resetDatabase } from '../../../db';
+import { useAppState } from '../../../context/AppProvider';
+import { IAppState } from '../../../context/AppProvider/models';
 
 const useStyles = createStyles((theme) => ({
   user: {
@@ -39,17 +41,18 @@ const useStyles = createStyles((theme) => ({
 function UserMenu() {
   const { classes, cx } = useStyles();
   const [userMenuOpened, setUserMenuOpened] = useState(false);
-
   const auth: IAuth | null = useAuth();
   const navigate = useNavigate();
+  const appState: IAppState | null = useAppState();
 
   const handleSignOut = () => {
     auth?.signout(() => navigate('/'));
   };
 
-  const handleResetDatabase = () => {
-    resetDatabase();
+  const handleResetDatabase = async () => {
+    appState?.setFirstNoteId(null);
     navigate('/');
+    await resetDatabase();
   };
 
   return (

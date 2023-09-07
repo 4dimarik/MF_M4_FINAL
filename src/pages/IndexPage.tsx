@@ -1,12 +1,16 @@
-import { Navigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useFirstNoteId } from '../context/AppProvider';
 
 export default function IndexPage() {
-  const id = useFirstNoteId();
+  const firstNoteId = useFirstNoteId();
+  const navigate = useNavigate();
 
-  if (id) {
-    return <Navigate to={`/note/${id}`} replace />;
-  }
+  useEffect(() => {
+    if (firstNoteId) {
+      navigate(`/note/${firstNoteId}`, { replace: true });
+    }
+  }, [firstNoteId, navigate]);
 
-  return <div>IndexPage</div>;
+  return <></>;
 }

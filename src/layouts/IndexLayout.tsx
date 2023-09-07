@@ -8,6 +8,7 @@ import { HeaderBlock } from '../components/HeaderBlock';
 export default function IndexLayout() {
   const appState: IAppState | null = useAppState();
   const notes = appState?.notes;
+
   return (
     <AppShell
       padding="md"
@@ -26,9 +27,3 @@ export default function IndexLayout() {
     </AppShell>
   );
 }
-
-// {activeNote?.value ? (
-//   <TextEditor activeNote={activeNote?.value} />
-// ) : (
-//   <Box>Нет заметок</Box>
-// )}

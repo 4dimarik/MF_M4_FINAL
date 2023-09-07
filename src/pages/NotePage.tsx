@@ -4,16 +4,18 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import TextEditor from '../components/TextEditor';
 import { IActiveNote } from '../context/AppProvider/models';
 import { useActiveNote } from '../context/AppProvider';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export default function NotePage() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   let note: Note | undefined = undefined;
   note = useLiveQuery(
     async () => {
       const note: Note | undefined = await db.notes.get(Number(id));
-      if (!note) navigate('/404');
+      if (!note && location?.state?.from !== '/404')
+        navigate('/404', { state: { from: location.pathname } });
       return note;
     },
     [id],

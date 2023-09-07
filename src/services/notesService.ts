@@ -91,6 +91,41 @@ const notesService = {
       return undefined;
     }
   },
+  fetchAll: async () => {
+    try {
+      return await db.notes.orderBy('updatedAt').reverse().toArray();
+    } catch (error) {
+      const result = {
+        status: 'error',
+        message: `${error}`,
+      } as ActionResult;
+
+      toast.error(result.message);
+
+      return undefined;
+    }
+  },
+  fetch: async (search: string) => {
+    try {
+      return await db.notes
+        .orderBy('updatedAt')
+        .reverse()
+        .filter((note) => {
+          const regexp = new RegExp(search, 'ig');
+          return regexp.test(note.content) || regexp.test(note.title);
+        })
+        .toArray();
+    } catch (error) {
+      const result = {
+        status: 'error',
+        message: `${error}`,
+      } as ActionResult;
+
+      toast.error(result.message);
+
+      return undefined;
+    }
+  },
 };
 
 export default notesService;
