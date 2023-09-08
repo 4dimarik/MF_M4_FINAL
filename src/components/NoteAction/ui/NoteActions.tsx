@@ -18,6 +18,8 @@ const NoteActions = memo(function NoteActions() {
 
   const handleDelete = () => {
     if (id) notesService.delete(Number(id));
+    appState?.setFirstNoteId(null);
+    navigate('/');
   };
 
   const toggleNoteEditable = () => {
